@@ -3,6 +3,7 @@ package controllers
 import (
 	"lensent/models/repository"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,11 +35,12 @@ func (pc UserController) Post(c *gin.Context) {
 	}
 }
 
-// Get /users/:sub
-func (pc UserController) GetBySub(c *gin.Context) {
-	sub := c.Params.ByName("sub")
+// Get /users/:id
+func (pc UserController) GetByID(c *gin.Context) {
+	id := c.Params.ByName("id")
 	var u repository.UserRepository
-	user, err := u.GetBySub(sub)
+	idInt, _ := strconv.Atoi(id)
+	user, err := u.GetByID(idInt)
 
 	if err != nil {
 		c.AbortWithStatus(400)
@@ -48,11 +50,12 @@ func (pc UserController) GetBySub(c *gin.Context) {
 	}
 }
 
-// Put /users/:sub
+// Put /users/:id
 func (pc UserController) Put(c *gin.Context) {
-	sub := c.Params.ByName("sub")
+	id := c.Params.ByName("id")
 	var u repository.UserRepository
-	p, err := u.UpdateBySub(sub, c)
+	idInt, _ := strconv.Atoi(id)
+	p, err := u.UpdateByID(idInt, c)
 
 	if err != nil {
 		c.AbortWithStatus(404)
@@ -62,14 +65,15 @@ func (pc UserController) Put(c *gin.Context) {
 	}
 }
 
-// Delete /users/:sub
+// Delete /users/:id
 func (pc UserController) Delete(c *gin.Context) {
-	sub := c.Params.ByName("sub")
+	id := c.Params.ByName("id")
 	var u repository.UserRepository
-	if err := u.DeleteBySub(sub); err != nil {
+	idInt, _ := strconv.Atoi(id)
+	if err := u.DeleteByID(idInt); err != nil {
 		c.AbortWithStatus(403)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, gin.H{"success": "ID" + sub + "のユーザーを削除しました"})
+	c.JSON(200, gin.H{"success": "ID" + id + "のユーザーを削除しました"})
 }

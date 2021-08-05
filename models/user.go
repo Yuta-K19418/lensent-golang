@@ -1,6 +1,8 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type User struct {
-	Sub  string `json:"sub" binding:"required"`
+	gorm.Model
 	Name string `json:"name" binding:"required"`
 }

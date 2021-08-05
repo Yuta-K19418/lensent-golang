@@ -9,11 +9,12 @@ import (
 )
 
 var (
-	db *gorm.DB
+	db  *gorm.DB
+	err error
 )
 
 func Init() {
-	db, err := gorm.Open("postgres", "host=PostgresTest port=5432 user=postgres password=postgres dbname=testdb sslmode=disable")
+	db, err = gorm.Open("postgres", "host=PostgresTest port=5432 user=postgres password=postgres dbname=testdb sslmode=disable")
 	if err != nil {
 		panic("Database couldn't connect.")
 	}

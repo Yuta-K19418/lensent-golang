@@ -19,9 +19,9 @@ func router() *gin.Engine {
 		ctrl := controllers.UserController{}
 		u.GET("", ctrl.Get)
 		u.POST("", ctrl.Post)
-		u.GET("/:sub", ctrl.GetBySub)
-		u.PUT("/:sub", ctrl.Put)
-		u.DELETE("/:sub", ctrl.Delete)
+		u.GET("/:id", ctrl.GetByID)
+		u.PUT("/:id", ctrl.Put)
+		u.DELETE("/:id", ctrl.Delete)
 	}
 
 	return r
