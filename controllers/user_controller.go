@@ -11,7 +11,7 @@ import (
 type UserController struct{}
 
 // Get /users
-func (pc UserController) Get(c *gin.Context) {
+func (uc UserController) Get(c *gin.Context) {
 	var u repository.UserRepository
 	p, err := u.GetAll()
 	if err != nil {
@@ -23,7 +23,7 @@ func (pc UserController) Get(c *gin.Context) {
 }
 
 // Post /users
-func (pc UserController) Post(c *gin.Context) {
+func (uc UserController) Post(c *gin.Context) {
 	var u repository.UserRepository
 	p, err := u.CreateModel(c)
 
@@ -36,7 +36,7 @@ func (pc UserController) Post(c *gin.Context) {
 }
 
 // Get /users/:id
-func (pc UserController) GetByID(c *gin.Context) {
+func (uc UserController) GetByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var u repository.UserRepository
 	idInt, _ := strconv.Atoi(id)
@@ -51,7 +51,7 @@ func (pc UserController) GetByID(c *gin.Context) {
 }
 
 // Put /users/:id
-func (pc UserController) Put(c *gin.Context) {
+func (uc UserController) Put(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var u repository.UserRepository
 	idInt, _ := strconv.Atoi(id)
@@ -66,7 +66,7 @@ func (pc UserController) Put(c *gin.Context) {
 }
 
 // Delete /users/:id
-func (pc UserController) Delete(c *gin.Context) {
+func (uc UserController) Delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var u repository.UserRepository
 	idInt, _ := strconv.Atoi(id)
