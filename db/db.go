@@ -19,7 +19,6 @@ func Init() {
 		panic("Database couldn't connect.")
 	}
 	autoMigration()
-	defer db.Close()
 }
 
 func ConnectDB() *gorm.DB {
@@ -34,4 +33,5 @@ func Close() {
 
 func autoMigration() {
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Sentense{}).AddForeignKey("user_id", "users(sub)", "RESTRICT", "RESTRICT")
 }

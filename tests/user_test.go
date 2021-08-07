@@ -15,11 +15,11 @@ func TestPost(t *testing.T) {
 	router := server.Router()
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
-	body := bytes.NewBufferString("{\"id\": \"12345\",\"name\": \"test\"}")
+	body := bytes.NewBufferString("{\"sub\":\"12345\",\"name\":\"test\"}")
 	c.Request, _ = http.NewRequest("POST", "/users", body)
 	router.ServeHTTP(w, c.Request)
 
-	assert.JSONEq(t, w.Body.String(), "{\"id\": \"12345\",\"name\": \"test\"}")
+	assert.JSONEq(t, w.Body.String(), "{\"sub\":\"12345\",\"name\":\"test\"}")
 	assert.Equal(t, w.Code, 200)
 }
 
