@@ -37,11 +37,11 @@ func (_ UserRepository) CreateModel(c *gin.Context) (User, error) {
 // GetBySub is getting a User by sub
 func (_ UserRepository) GetBySub(sub string) (models.User, error) {
 	db := db.ConnectDB()
-	var me models.User
-	if err := db.Where("sub = ?").First(&me).Error; err != nil {
-		return me, err
+	var u models.User
+	if err := db.Where("sub = ?").First(&u).Error; err != nil {
+		return u, err
 	}
-	return me, nil
+	return u, nil
 }
 
 // UpdateBySub is update a User

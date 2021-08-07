@@ -3,6 +3,9 @@ package server
 import (
 	"lensent/controllers"
 
+	"time"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +18,33 @@ func Router() *gin.Engine {
 	r := gin.Default()
 	v := r.Group("/api")
 	v.BasePath()
+
+	// Setting cors
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{
+		"http://localhost:3000",
+		"http://127.0.0.1:3000",
+	}
+	corsConfig.AllowMethods = []string{
+		"POST",
+		"GET",
+		"PUT",
+		"DELETE",
+		"OPTIONS",
+	}
+	corsConfig.AllowHeaders = []string{
+		"Access-Control-Allow-Credentials",
+		"Access-Control-Allow-Headers",
+		"Access-Control-Allow-Origin",
+		"Content-Type",
+		"Content-Length",
+		"Accept-Encoding",
+		"Authorization",
+	}
+	corsConfig.AllowCredentials = true
+	corsConfig.MaxAge = 24 * time.Hour
+
+	r.Use(cors.New(corsConfig))
 
 	u := r.Group(v.BasePath() + "/users")
 	{
