@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UsersRepository struct{}
+type UserRepository struct{}
 
 type User models.User
 
 // GetAll is getting all Users
-func (_ UsersRepository) GetAll() ([]User, error) {
+func (_ UserRepository) GetAll() ([]User, error) {
 	db := db.ConnectDB()
 	var u []User
 	if err := db.Table("users").Select("sub,name").Scan(&u).Error; err != nil {
@@ -22,7 +22,7 @@ func (_ UsersRepository) GetAll() ([]User, error) {
 }
 
 // CreateModel is creating User model
-func (_ UsersRepository) CreateModel(c *gin.Context) (User, error) {
+func (_ UserRepository) CreateModel(c *gin.Context) (User, error) {
 	db := db.ConnectDB()
 	var u User
 	if err := c.BindJSON(&u); err != nil {
@@ -35,7 +35,7 @@ func (_ UsersRepository) CreateModel(c *gin.Context) (User, error) {
 }
 
 // GetBySub is getting a User by sub
-func (_ UsersRepository) GetBySub(sub string) (models.User, error) {
+func (_ UserRepository) GetBySub(sub string) (models.User, error) {
 	db := db.ConnectDB()
 	var me models.User
 	if err := db.Where("sub = ?").First(&me).Error; err != nil {
@@ -45,7 +45,7 @@ func (_ UsersRepository) GetBySub(sub string) (models.User, error) {
 }
 
 // UpdateBySub is update a User
-func (_ UsersRepository) UpdateBySub(sub string, c *gin.Context) (models.User, error) {
+func (_ UserRepository) UpdateBySub(sub string, c *gin.Context) (models.User, error) {
 	db := db.ConnectDB()
 	var u models.User
 	if err := db.Where("sub = ?", sub).First(&u).Error; err != nil {
@@ -61,7 +61,7 @@ func (_ UsersRepository) UpdateBySub(sub string, c *gin.Context) (models.User, e
 }
 
 // DeleteBySub is delete a User by Sub
-func (_ UsersRepository) DeleteBySub(sub string) error {
+func (_ UserRepository) DeleteBySub(sub string) error {
 	db := db.ConnectDB()
 	var u User
 

@@ -7,78 +7,78 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type SentensesController struct{}
+type SentenseController struct{}
 
 // Get /sentenses
-func (sc SentensesController) Get(c *gin.Context) {
-	var s repository.SentensesRepository
-	p, err := s.GetAll()
+func (sc SentenseController) Get(c *gin.Context) {
+	var s repository.SentenseRepository
+	sentenses, err := s.GetAll()
 	if err != nil {
 		c.AbortWithStatus(404)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, p)
+		c.JSON(200, sentenses)
 	}
 }
 
 // Post /sentenses
-func (sc SentensesController) Post(c *gin.Context) {
-	var s repository.SentensesRepository
-	p, err := s.CreateModel(c)
+func (sc SentenseController) Post(c *gin.Context) {
+	var s repository.SentenseRepository
+	sentense, err := s.CreateModel(c)
 
 	if err != nil {
 		c.AbortWithStatus(400)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(201, p)
+		c.JSON(201, sentense)
 	}
 }
 
 // Get /sentenses/:sub
-func (sc SentensesController) GetBySub(c *gin.Context) {
+func (sc SentenseController) GetBySub(c *gin.Context) {
 	sub := c.Params.ByName("sub")
-	var s repository.SentensesRepository
-	p, err := s.GetAllByUser(sub)
+	var s repository.SentenseRepository
+	sentenses, err := s.GetAllByUser(sub)
 	if err != nil {
 		c.AbortWithStatus(404)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, p)
+		c.JSON(200, sentenses)
 	}
 }
 
 // Get /sentenses/:sentense_id
-func (sc SentensesController) GetBySentenseId(c *gin.Context) {
+func (sc SentenseController) GetBySentenseId(c *gin.Context) {
 	sentense_id := c.Params.ByName("sentense_id")
-	var s repository.SentensesRepository
-	user, err := s.GetBySentenseId(sentense_id)
+	var s repository.SentenseRepository
+	sentense, err := s.GetBySentenseId(sentense_id)
 
 	if err != nil {
 		c.AbortWithStatus(400)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, user)
+		c.JSON(200, sentense)
 	}
 }
 
 // Put /sentenses/:sentense_id
-func (sc SentensesController) Put(c *gin.Context) {
+func (sc SentenseController) Put(c *gin.Context) {
 	sentense_id := c.Params.ByName("sentense_id")
-	var s repository.SentensesRepository
-	p, err := s.UpdateBySentenseId(sentense_id, c)
+	var s repository.SentenseRepository
+	sentense, err := s.UpdateBySentenseId(sentense_id, c)
 
 	if err != nil {
 		c.AbortWithStatus(404)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, p)
+		c.JSON(200, sentense)
 	}
 }
 
 // Delete /sentense/:sentense_id
-func (sc SentensesController) Delete(c *gin.Context) {
+func (sc SentenseController) Delete(c *gin.Context) {
 	sentense_id := c.Params.ByName("sentense_id")
-	var s repository.SentensesRepository
+	var s repository.SentenseRepository
 	if err := s.DeleteBySentenseId(sentense_id); err != nil {
 		c.AbortWithStatus(403)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -7,37 +7,37 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UsersController struct{}
+type UserController struct{}
 
 // Get /users
-func (uc UsersController) Get(c *gin.Context) {
-	var u repository.UsersRepository
-	p, err := u.GetAll()
+func (uc UserController) Get(c *gin.Context) {
+	var u repository.UserRepository
+	users, err := u.GetAll()
 	if err != nil {
 		c.AbortWithStatus(404)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, p)
+		c.JSON(200, users)
 	}
 }
 
 // Post /users
-func (uc UsersController) Post(c *gin.Context) {
-	var u repository.UsersRepository
-	p, err := u.CreateModel(c)
+func (uc UserController) Post(c *gin.Context) {
+	var u repository.UserRepository
+	user, err := u.CreateModel(c)
 
 	if err != nil {
 		c.AbortWithStatus(400)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(201, p)
+		c.JSON(201, user)
 	}
 }
 
 // Get /users/:sub
-func (uc UsersController) GetBySub(c *gin.Context) {
+func (uc UserController) GetBySub(c *gin.Context) {
 	sub := c.Params.ByName("sub")
-	var u repository.UsersRepository
+	var u repository.UserRepository
 	user, err := u.GetBySub(sub)
 
 	if err != nil {
@@ -49,23 +49,23 @@ func (uc UsersController) GetBySub(c *gin.Context) {
 }
 
 // Put /users/:sub
-func (uc UsersController) Put(c *gin.Context) {
+func (uc UserController) Put(c *gin.Context) {
 	sub := c.Params.ByName("sub")
-	var u repository.UsersRepository
-	p, err := u.UpdateBySub(sub, c)
+	var u repository.UserRepository
+	user, err := u.UpdateBySub(sub, c)
 
 	if err != nil {
 		c.AbortWithStatus(404)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, p)
+		c.JSON(200, user)
 	}
 }
 
 // Delete /users/:sub
-func (uc UsersController) Delete(c *gin.Context) {
+func (uc UserController) Delete(c *gin.Context) {
 	sub := c.Params.ByName("sub")
-	var u repository.UsersRepository
+	var u repository.UserRepository
 	if err := u.DeleteBySub(sub); err != nil {
 		c.AbortWithStatus(403)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

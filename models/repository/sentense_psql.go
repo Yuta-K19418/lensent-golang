@@ -8,12 +8,12 @@ import (
 	"github.com/google/uuid"
 )
 
-type SentensesRepository struct{}
+type SentenseRepository struct{}
 
 type Sentense models.Sentense
 
-// GetAll is getting all sentenses
-func (_ SentensesRepository) GetAll() ([]Sentense, error) {
+// GetAll is getting all Sentenses
+func (_ SentenseRepository) GetAll() ([]Sentense, error) {
 	db := db.ConnectDB()
 	var s []Sentense
 	if err := db.Table("sentenses").Select("sentense_id, title, sentense, users").Scan(&s).Error; err != nil {
@@ -23,7 +23,7 @@ func (_ SentensesRepository) GetAll() ([]Sentense, error) {
 }
 
 // CreateModel is creating Sentense Model
-func (_ SentensesRepository) CreateModel(c *gin.Context) (Sentense, error) {
+func (_ SentenseRepository) CreateModel(c *gin.Context) (Sentense, error) {
 	db := db.ConnectDB()
 	var s Sentense
 	s.SentenseID = uuid.NewString()
@@ -36,8 +36,8 @@ func (_ SentensesRepository) CreateModel(c *gin.Context) (Sentense, error) {
 	return s, nil
 }
 
-// GetAllByUser is getting all sentenses by User
-func (_ SentensesRepository) GetAllByUser(sub string) ([]Sentense, error) {
+// GetAllByUser is getting all Sentenses by User
+func (_ SentenseRepository) GetAllByUser(sub string) ([]Sentense, error) {
 	db := db.ConnectDB()
 	var s []Sentense
 	if err := db.Table("sentenses").Where("sub = ?").Select("sentense_id, title, sentense, users").Scan(&s).Error; err != nil {
@@ -47,7 +47,7 @@ func (_ SentensesRepository) GetAllByUser(sub string) ([]Sentense, error) {
 }
 
 // GetBySentenseId is getting a Sentense by sentense_id
-func (_ SentensesRepository) GetBySentenseId(sentense_id string) (models.Sentense, error) {
+func (_ SentenseRepository) GetBySentenseId(sentense_id string) (models.Sentense, error) {
 	db := db.ConnectDB()
 	var s models.Sentense
 	if err := db.Where("sentense_id = ?").First(&s).Error; err != nil {
@@ -57,7 +57,7 @@ func (_ SentensesRepository) GetBySentenseId(sentense_id string) (models.Sentens
 }
 
 // UpdateBySentenseId is update a Sentense
-func (_ SentensesRepository) UpdateBySentenseId(sentense_id string, c *gin.Context) (models.Sentense, error) {
+func (_ SentenseRepository) UpdateBySentenseId(sentense_id string, c *gin.Context) (models.Sentense, error) {
 	db := db.ConnectDB()
 	var s models.Sentense
 	if err := db.Where("sentense_id = ?", sentense_id).First(&s).Error; err != nil {
@@ -73,7 +73,7 @@ func (_ SentensesRepository) UpdateBySentenseId(sentense_id string, c *gin.Conte
 }
 
 // DeleteBySentenseId is delete a Sentense by sentense_id
-func (_ SentensesRepository) DeleteBySentenseId(sentense_id string) error {
+func (_ SentenseRepository) DeleteBySentenseId(sentense_id string) error {
 	db := db.ConnectDB()
 	var s Sentense
 

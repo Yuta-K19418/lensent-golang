@@ -34,4 +34,5 @@ func Close() {
 func autoMigration() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Sentense{}).AddForeignKey("user_id", "users(sub)", "RESTRICT", "RESTRICT")
+	db.AutoMigrate(&models.Word{}).AddForeignKey("user_id", "users(sub)", "RESTRICT", "RESTRICT").AddForeignKey("sentense_id", "sentenses(sentense_id)", "RESTRICT", "RESTRICT")
 }
