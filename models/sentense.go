@@ -11,5 +11,4 @@ type Sentense struct {
 	UserID     string `json:"sub" binding:"required" gorm:"not null"`
 	Created_at time.Time
 	Updated_at time.Time
-	Deleted_at *time.Time
 }

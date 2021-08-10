@@ -38,7 +38,7 @@ func (_ UserRepository) CreateModel(c *gin.Context) (User, error) {
 func (_ UserRepository) GetBySub(sub string) (models.User, error) {
 	db := db.ConnectDB()
 	var u models.User
-	if err := db.Where("sub = ?").First(&u).Error; err != nil {
+	if err := db.Table("users").Where("sub = ?", sub).Scan(&u).Error; err != nil {
 		return u, err
 	}
 	return u, nil
@@ -48,13 +48,12 @@ func (_ UserRepository) GetBySub(sub string) (models.User, error) {
 func (_ UserRepository) UpdateBySub(sub string, c *gin.Context) (models.User, error) {
 	db := db.ConnectDB()
 	var u models.User
-	if err := db.Where("sub = ?", sub).First(&u).Error; err != nil {
+	if err := db.Table("users").Where("sub = ?", sub).Scan(&u).Error; err != nil {
 		return u, err
 	}
 	if err := c.BindJSON(&u); err != nil {
 		return u, err
 	}
-	u.Sub = sub
 	db.Save(&u)
 
 	return u, nil
@@ -65,7 +64,7 @@ func (_ UserRepository) DeleteBySub(sub string) error {
 	db := db.ConnectDB()
 	var u User
 
-	if err := db.Where("sub = ?", sub).Delete(&u).Error; err != nil {
+	if err := db.Table("users").Where("sub = ?", sub).Delete(&u).Error; err != nil {
 		return err
 	}
 

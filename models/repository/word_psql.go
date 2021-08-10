@@ -40,7 +40,7 @@ func (_ WordRepository) CreateModel(c *gin.Context) (Word, error) {
 func (_ WordRepository) GetAllBySentense(sentense_id string) ([]Word, error) {
 	db := db.ConnectDB()
 	var w []Word
-	if err := db.Table("words").Where("sentense_id = ?").Select("word_id, en, js, user_id, sentense_id").Scan(&w).Error; err != nil {
+	if err := db.Table("words").Where("sentense_id = ?", sentense_id).Scan(&w).Error; err != nil {
 		return nil, err
 	}
 	return w, nil
@@ -50,7 +50,7 @@ func (_ WordRepository) GetAllBySentense(sentense_id string) ([]Word, error) {
 func (_ WordRepository) GetByWordId(word_id string) (models.Word, error) {
 	db := db.ConnectDB()
 	var w models.Word
-	if err := db.Where("word_id = ?").First(&w).Error; err != nil {
+	if err := db.Table("words").Where("word_id = ?", word_id).Scan(&w).Error; err != nil {
 		return w, err
 	}
 	return w, nil
@@ -66,7 +66,6 @@ func (_ WordRepository) UpdateByWordId(word_id string, c *gin.Context) (models.W
 	if err := c.BindJSON(&w); err != nil {
 		return w, err
 	}
-	w.WordID = word_id
 	db.Save(&w)
 
 	return w, nil
@@ -77,7 +76,7 @@ func (_ WordRepository) DeleteByWordId(word_id string) error {
 	db := db.ConnectDB()
 	var w Word
 
-	if err := db.Where("word_id = ?", word_id).Delete(&w).Error; err != nil {
+	if err := db.Table("words").Where("word_id = ?", word_id).Delete(&w).Error; err != nil {
 		return err
 	}
 
