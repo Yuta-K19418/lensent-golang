@@ -30,7 +30,6 @@ func Router() *gin.Engine {
 		"GET",
 		"PUT",
 		"DELETE",
-		"OPTIONS",
 	}
 	corsConfig.AllowHeaders = []string{
 		"Access-Control-Allow-Credentials",
