@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Postgres For LenSentApp
+
+Parameters:
+  DatabasePassword:
+    Type: String
+    Description: Database password
+    NoEcho: "true"
+
+Resources:
+  ApplicationDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: MySQL
+      EngineVersion: 5.7
+      DBInstanceClass: db.t2.micro
+      AllocatedStorage: 10
+      StorageType: gp2
+      MasterUsername: CloudTech
+      MasterUserPassword:
+        Ref: DatabasePassword
+      DBName: CloudTech
+      VPCSecurityGroups:
+        - !Ref ApplicationDatabaseSecurityGroup
+      DBSubnetGroupName: !Ref ApplicationDatabaseSubnetGroup
+      MultiAZ: "false"
+      AvailabilityZone: !Sub ${AWS::Region}a
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db
+  ApplicationDatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Application Database Subnet Group
+      SubnetIds: 
+        - !ImportValue RDSSubnet1Name
+        - !ImportValue RDSSubnet2Name
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db-subnet-group
+  ApplicationDatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName} Application Database Security Group
+      VpcId: !ImportValue LenSentVPCName
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 5432
+        ToPort: 5432
+        CidrIp: 10.0.2.0/24, 10.0.3.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db-sg
