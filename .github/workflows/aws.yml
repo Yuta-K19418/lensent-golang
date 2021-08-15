@@ -47,10 +47,10 @@ jobs:
     - name: Deploy Cloudformation Stack0
       env:
         STACK_NAME: LenSentECR
-        TEMPLATE_NAME: config/ecr.yml
+        TEMPLATE_NAME: ecr.yml
       run: |
         aws cloudformation deploy \
-           --template-file ${TEMPLATE_NAME} \
+           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME}
 
     - name: Login to Amazon ECR
@@ -74,37 +74,37 @@ jobs:
     - name: Deploy Cloudformation Stack1
       env:
         STACK_NAME: LenSentNetwork
-        TEMPLATE_NAME: config/vpc.yml
+        TEMPLATE_NAME: vpc.yml
       run: |
         aws cloudformation deploy \
-           --template-file ${TEMPLATE_NAME} \
+           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME}
 
     - name: Deploy Cloudformation Stack2
       env:
         STACK_NAME: LenSentSG
-        TEMPLATE_NAME: config/sg.yml
+        TEMPLATE_NAME: sg.yml
       run: |
         aws cloudformation deploy \
-           --template-file ${TEMPLATE_NAME} \
+           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME}
     
     - name: Deploy Cloudformation Stack3
       env:
         STACK_NAME: LenSentLog
-        TEMPLATE_NAME: config/s3.yml
+        TEMPLATE_NAME: s3.yml
       run: |
         aws cloudformation deploy \
-           --template-file ${TEMPLATE_NAME} \
+           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME}
     
     - name: Deploy Cloudformation Stack4
       env:
         STACK_NAME: LenSentECS
-        TEMPLATE_NAME: config/ecs.yml
+        TEMPLATE_NAME: ecs.yml
       run: |
         aws cloudformation deploy \
-           --template-file ${TEMPLATE_NAME} \
+           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME} \
            --capabilities CAPABILITY_NAMED_IAM \
            --parameter-overrides ECSImageName=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
