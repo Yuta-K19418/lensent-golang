@@ -13,13 +13,12 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
 
-RUN mkdir /go/src
-WORKDIR /go/src
-COPY ./* ./*
+WORKDIR /go/src/lensent
+COPY . .
 RUN go build -o app main.go
 
 # Runtime Container
 FROM alpine
-COPY --from=builder /app /app
+COPY --from=builder /go/src/lensent/app /app
 EXPOSE 8080
 ENTRYPOINT ["/app"]
