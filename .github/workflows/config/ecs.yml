@@ -276,8 +276,7 @@ Resources:
     Properties:
       Cluster: !Ref ECSCluster
       DesiredCount: !Ref ECSTaskDesiredCount
-      # LaunchType: FARGATE
-      LaunchType: EC2
+      LaunchType: FARGATE
       LoadBalancers:
         -
           TargetGroupArn: !Ref TargetGroup
