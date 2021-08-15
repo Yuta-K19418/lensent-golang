@@ -16,7 +16,7 @@ Resources:
         - Key: Name
           Value: LenSentVPCfromCF
   # Publicサブネット
-  ALBSubnet1:
+  ECSSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1a"
@@ -24,8 +24,8 @@ Resources:
       CidrBlock: 10.0.0.0/24
       Tags:
         - Key: Name
-          Value: ALBSubnet1fromcf
-  ALBSubnet2:
+          Value: ECSSubnet1fromcf
+  ECSSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1c"
@@ -33,7 +33,7 @@ Resources:
       CidrBlock: 10.0.1.0/24
       Tags:
         - Key: Name
-          Value: ALBSubnet2fromcf
+          Value: ECSSubnet2fromcf
   ECSSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -71,20 +71,6 @@ Resources:
         - Key: Name
           Value: RDSSubnet2fromcf
   # Publicサブネットのルートテーブル
-  ALBSubnet1RT:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref LenSentVPC
-      Tags:
-        - Key: Name
-          Value: ALBSubnet1RTfromcf
-  ALBSubnet2RT:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref LenSentVPC
-      Tags:
-        - Key: Name
-          Value: ALBSubnet2RTfromcf
   ECSSubnet1RT:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -114,28 +100,28 @@ Resources:
         - Key: Name
           Value: RDSSubnet2RTfromcf
   # インターネットゲートウェイのルートテーブル
-  ALBSubnet1ToInternet:
+  ECSSubnet1ToInternet:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref ALBSubnet1RT
+      RouteTableId: !Ref ECSSubnet1RT
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IGW
-  AssoALBSubnet1RT:
+  AssoECSSubnet1RT:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref ALBSubnet1
-      RouteTableId: !Ref ALBSubnet1RT
-  ALBSubnet2ToInternet:
+      SubnetId: !Ref ECSSubnet1
+      RouteTableId: !Ref ECSSubnet1RT
+  ECSSubnet2ToInternet:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref ALBSubnet2RT
+      RouteTableId: !Ref ECSSubnet2RT
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IGW
-  AssoALBSubnet2RT:
+  AssoECSSubnet2RT:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref ALBSubnet2
-      RouteTableId: !Ref ALBSubnet2RT
+      SubnetId: !Ref ECSSubnet2
+      RouteTableId: !Ref ECSSubnet2RT
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -155,14 +141,6 @@ Outputs:
       Value: !Ref LenSentVPC 
       Export:
         Name: LenSentVPCName
-  ALBSubnet1:
-      Value: !Ref ALBSubnet1
-      Export:
-        Name: ALBSubnet1Name
-  ALBSubnet2:
-      Value: !Ref ALBSubnet2
-      Export:
-        Name: ALBSubnet2Name
   ECSSubnet1:
       Value: !Ref ECSSubnet1
       Export:
