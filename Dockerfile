@@ -1,4 +1,5 @@
-FROM golang:1.15.2-alpine AS build-env
+# Build Container
+FROM golang:1.15.2-alpine AS builder
 RUN apk update
 RUN apk add git
 
@@ -14,5 +15,11 @@ ENV GOARCH=amd64
 
 RUN mkdir /go/src
 WORKDIR /go/src
-RUN git clone https://github.com/Yuta-K19418/lensent-golang.git
+COPY . ./
 RUN go build -o app main.go
+
+# Runtime Container
+FROM alpine
+COPY --from=builder /app /app
+EXPOSE 8080
+ENTRYPOINT ["/app"]
