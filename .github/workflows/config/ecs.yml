@@ -25,14 +25,14 @@ Metadata:
           - ECSImageName
           - ECSServiceName
           - ECSTaskDesiredCount
-      - Label:
-          default: "Scaling Configuration"
-        Parameters:
-          - ServiceScaleEvaluationPeriods
-          - ServiceCpuScaleOutThreshold
-          - ServiceCpuScaleInThreshold
-          - TaskMinContainerCount
-          - TaskMaxContainerCount
+      # - Label:
+      #     default: "Scaling Configuration"
+      #   Parameters:
+      #     - ServiceScaleEvaluationPeriods
+      #     - ServiceCpuScaleOutThreshold
+      #     - ServiceCpuScaleInThreshold
+      #     - TaskMinContainerCount
+      #     - TaskMaxContainerCount
 
     ParameterLabels:
       InternetALBName:
@@ -94,7 +94,7 @@ Parameters:
   ECSTaskMemory:
     AllowedValues: [ 256, 512, 1024, 2048, 4096  ]
     Type: String
-    Default: "512"
+    Default: "256"
 
 #ECSContainerName
   ECSContainerName:
@@ -117,41 +117,41 @@ Parameters:
     Default: 1
 
 # Scaling params
-  ServiceScaleEvaluationPeriods:
-    Description: The number of periods over which data is compared to the specified threshold
-    Type: Number
-    Default: 2
-    MinValue: 2
+  # ServiceScaleEvaluationPeriods:
+  #   Description: The number of periods over which data is compared to the specified threshold
+  #   Type: Number
+  #   Default: 2
+  #   MinValue: 2
 
-  ServiceCpuScaleOutThreshold:
-    Type: Number
-    Description: Average CPU value to trigger auto scaling out
-    Default: 50
-    MinValue: 0
-    MaxValue: 100
-    ConstraintDescription: Value must be between 0 and 100
+  # ServiceCpuScaleOutThreshold:
+  #   Type: Number
+  #   Description: Average CPU value to trigger auto scaling out
+  #   Default: 50
+  #   MinValue: 0
+  #   MaxValue: 100
+  #   ConstraintDescription: Value must be between 0 and 100
 
-  ServiceCpuScaleInThreshold:
-    Type: Number
-    Description: Average CPU value to trigger auto scaling in
-    Default: 25
-    MinValue: 0
-    MaxValue: 100
-    ConstraintDescription: Value must be between 0 and 100
+  # ServiceCpuScaleInThreshold:
+  #   Type: Number
+  #   Description: Average CPU value to trigger auto scaling in
+  #   Default: 25
+  #   MinValue: 0
+  #   MaxValue: 100
+  #   ConstraintDescription: Value must be between 0 and 100
 
-  TaskMinContainerCount:
-    Type: Number
-    Description: Minimum number of containers to run for the service
-    Default: 1
-    MinValue: 1
-    ConstraintDescription: Value must be at least one
+  # TaskMinContainerCount:
+  #   Type: Number
+  #   Description: Minimum number of containers to run for the service
+  #   Default: 1
+  #   MinValue: 1
+  #   ConstraintDescription: Value must be at least one
 
-  TaskMaxContainerCount:
-    Type: Number
-    Description: Maximum number of containers to run for the service when auto scaling out
-    Default: 2
-    MinValue: 1
-    ConstraintDescription: Value must be at least one
+  # TaskMaxContainerCount:
+  #   Type: Number
+  #   Description: Maximum number of containers to run for the service when auto scaling out
+  #   Default: 2
+  #   MinValue: 1
+  #   ConstraintDescription: Value must be at least one
 
 Resources:
 
@@ -276,7 +276,8 @@ Resources:
     Properties:
       Cluster: !Ref ECSCluster
       DesiredCount: !Ref ECSTaskDesiredCount
-      LaunchType: FARGATE
+      # LaunchType: FARGATE
+      LaunchType: EC2
       LoadBalancers:
         -
           TargetGroupArn: !Ref TargetGroup
