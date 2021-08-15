@@ -15,7 +15,7 @@ ENV GOARCH=amd64
 
 RUN mkdir /go/src
 WORKDIR /go/src
-COPY . ./
+COPY ./* ./*
 RUN go build -o app main.go
 
 # Runtime Container
