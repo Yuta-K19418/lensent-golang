@@ -190,8 +190,8 @@ Resources:
       SecurityGroups:
         - !ImportValue ALBSecurityGroupName
       Subnets:
-        - !ImportValue ALBSubnet1Name
-        - !ImportValue ALBSubnet2Name
+        - !ImportValue ECSSubnet1Name
+        - !ImportValue ECSSubnet2Name
 
   ALBListener:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
