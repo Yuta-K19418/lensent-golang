@@ -102,9 +102,10 @@ jobs:
       env:
         STACK_NAME: LenSentECS
         TEMPLATE_NAME: ecs.yml
+        ECSImageName: ${{ steps.login-ecr.outputs.registry }}/lensent-ecr:${{ github.sha }}
       run: |
         aws cloudformation deploy \
            --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME} \
            --capabilities CAPABILITY_NAMED_IAM \
-           --parameter-overrides ECSImageName=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+           --parameter-overrides ECSImageName=${ECSImageName}
