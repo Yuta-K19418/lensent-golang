@@ -94,7 +94,7 @@ Parameters:
   ECSTaskMemory:
     AllowedValues: [ 256, 512, 1024, 2048, 4096  ]
     Type: String
-    Default: "256"
+    Default: "512"
 
 #ECSContainerName
   ECSContainerName:
