@@ -107,4 +107,4 @@ jobs:
            --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
            --stack-name ${STACK_NAME} \
            --capabilities CAPABILITY_NAMED_IAM \
-           --parameter-overrides ECSImageName=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+           --parameter-overrides ECSImageName=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
