@@ -15,16 +15,11 @@ ENV GOARCH=amd64
 WORKDIR /go/src/lensent
 COPY . .
 RUN go build -o app main.go
-RUN touch ./local.env
-RUN echo "DB_HOST=${DB_HOST}" >> ./local.env
-RUN echo "DB_USER=postgres" >> ./local.env
-RUN echo "DB_PASSWORD=postgres" >> ./local.env
-RUN echo "DB=lensent" >> ./local.env
-RUN echo "DB_PORT=5432" >> ./local.env
 COPY ./local.env ./app/.
 
 # Runtime Container
 FROM alpine
 COPY --from=builder /go/src/lensent/app /app
+ENV DB_HOST=${DB_HOST}
 EXPOSE 8080
 ENTRYPOINT ["/app"]
