@@ -15,7 +15,6 @@ ENV GOARCH=amd64
 WORKDIR /go/src/lensent
 COPY . .
 RUN go build -o app main.go
-ENV DB_HOST=`cat db.conf`
 RUN echo "DB_HOST=${DB_HOST}" > local.env
 RUN echo "DB_USER=postgres" >> local.env
 RUN echo "DB_PASSWORD=postgres" >> local.env
