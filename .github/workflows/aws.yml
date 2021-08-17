@@ -107,8 +107,7 @@ jobs:
         aws docdb describe-db-instances \
            --region ${aws-region} \
            --query 'DBInstances[*].[Endpoint.Address]' \
-           | jq -r '.[] \ 
-           | @tsv' \
+           | jq -r '.[] | @tsv' \
            > db.conf
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
