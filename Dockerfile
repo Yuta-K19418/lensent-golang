@@ -20,6 +20,7 @@ COPY ./local.env ./app/.
 # Runtime Container
 FROM alpine
 COPY --from=builder /go/src/lensent/app /app
+ARG DB_HOST
 ENV DB_HOST=${DB_HOST}
 EXPOSE 8080
 ENTRYPOINT ["/app"]
