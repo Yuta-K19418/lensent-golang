@@ -18,10 +18,11 @@ Parameters:
 Resources:
   ApplicationDatabase:
     Type: AWS::RDS::DBInstance
+    Condition: "DevResources"
     Properties:
-      Engine: PostgreSQL
+      Engine: postgres
       EngineVersion: 13.3-R1
-      DBInstanceClass: db.t3.micro
+      DBInstanceClass: db.t2.micro
       AllocatedStorage: 20
       StorageType: gp2
       MasterUsername: !Ref DBMasterUserName
