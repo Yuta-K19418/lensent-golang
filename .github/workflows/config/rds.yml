@@ -18,7 +18,6 @@ Parameters:
 Resources:
   ApplicationDatabase:
     Type: AWS::RDS::DBInstance
-    Condition: "DevResources"
     Properties:
       Engine: postgres
       EngineVersion: 13.3
