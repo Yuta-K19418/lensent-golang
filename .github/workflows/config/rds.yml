@@ -64,25 +64,26 @@ Resources:
           Value: !Sub ${AWS::StackName}-db-sg
 
 Outputs:
-  ApplicationDatabase:
-    Value: !Ref ApplicationDatabase
+  DBUser:
+    Value: !Ref DBMasterUserName
+    Export:
+      Name: DBUser
+  DBPassword:
+    Value: !Ref DBMasterUserPassword
+    Export:
+      Name: DBPassword
+  ApplicationDatabaseName:
+    Value: !Ref DBName
     Export:
       Name: ApplicationDatabaseName
-  DBMasterUsername:
-    Value: !Ref DBMasterUserName
-    Export: DBMasterUsername
-  DBMasterUserPassword:
-    Value: !Ref DBMasterUserPassword
-    Export: DBMasterUserPassword
-  DBName:
-    Value: !Ref DBName
-    Export: DBName
   DBEndpoint:
     Value: !GetAtt Endpoint.Address
-    Export: DBEndpoint
+    Export:
+      Name: DBEndpoint
   DBPort:
     Value: !GetAtt Endpoint.Port
-    Export: DBPort
+    Export:
+      Name: DBPort
   ApplicationDatabaseSubnetGroup:
     Value: !Ref ApplicationDatabaseSubnetGroup
     Export:

@@ -257,11 +257,11 @@ Resources:
           Image: !Ref ECSImageName
           Environment:
            - Name: DB_USER
-             Value: !ImportValue DBMasterUsername
+             Value: !ImportValue DBUser
            - Name: DB_PASSWORD
-             Value: !ImportValue DBMasterUserPassword
+             Value: !ImportValue DBPassword
            - Name: DB_NAME
-             Value: !ImportValue DBName
+             Value: !ImportValue ApplicationDatabaseName
            - Name: DB_ENDPOINT
              Value: !ImportValue DBEndPoint
            - Name: DB_PORT
