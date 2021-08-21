@@ -263,7 +263,7 @@ Resources:
            - Name: DB_NAME
              Value: !ImportValue ApplicationDatabaseName
            - Name: DB_ENDPOINT
-             Value: !ImportValue DBEndPoint
+             Value: !ImportValue DBEndpoint
            - Name: DB_PORT
              Value: !ImportValue DBPort
           LogConfiguration:
