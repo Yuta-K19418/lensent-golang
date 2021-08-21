@@ -68,6 +68,21 @@ Outputs:
     Value: !Ref ApplicationDatabase
     Export:
       Name: ApplicationDatabaseName
+  DBMasterUsername:
+    Value: !Ref DBMasterUserName
+    Export: DBMasterUsername
+  DBMasterUserPassword:
+    Value: !Ref DBMasterUserPassword
+    Export: DBMasterUserPassword
+  DBName:
+    Value: !Ref DBName
+    Export: DBName
+  DBEndpoint:
+    Value: !GetAtt: Endpoint.Address
+    Export: DBEndpoint
+  DBPort:
+    Value: !GetAtt: Endpoint.Port
+    Export: DBPort
   ApplicationDatabaseSubnetGroup:
     Value: !Ref ApplicationDatabaseSubnetGroup
     Export:

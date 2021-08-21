@@ -255,6 +255,17 @@ Resources:
       ContainerDefinitions:
         - Name: !Sub "${ProjectName}-${ECSContainerName}"
           Image: !Ref ECSImageName
+          Environment:
+           - Name: DB_USER
+             Value: !ImportValue DBMasterUsername
+           - Name: DB_PASSWORD
+             Value: !ImportValue DBMasterUserPassword
+           - Name: DB_NAME
+             Value: !ImportValue DBName
+           - Name: DB_ENDPOINT
+             Value: !ImportValue DBEndPoint
+           - Name: DB_PORT
+             Value: !ImportValue DBPort
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -263,7 +274,7 @@ Resources:
               awslogs-stream-prefix: !Ref ProjectName
           MemoryReservation: 128
           PortMappings:
-            - HostPort: 8080
+            - HostPort: 80
               Protocol: tcp
               ContainerPort: 8080
 
