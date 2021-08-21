@@ -164,7 +164,7 @@ Resources:
       VpcId: !ImportValue LenSentVPCName
       Name: !Sub "${ProjectName}-${TargetGroupName}"
       Protocol: HTTP
-      Port: 80
+      Port: 8080
       TargetType: ip
 
 # ------------------------------------------------------------#
@@ -274,7 +274,7 @@ Resources:
               awslogs-stream-prefix: !Ref ProjectName
           MemoryReservation: 128
           PortMappings:
-            - HostPort: 80
+            - HostPort: 8080
               Protocol: tcp
               ContainerPort: 8080
 
