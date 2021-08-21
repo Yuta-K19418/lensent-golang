@@ -78,10 +78,10 @@ Outputs:
     Value: !Ref DBName
     Export: DBName
   DBEndpoint:
-    Value: !GetAtt: Endpoint.Address
+    Value: !GetAtt Endpoint.Address
     Export: DBEndpoint
   DBPort:
-    Value: !GetAtt: Endpoint.Port
+    Value: !GetAtt Endpoint.Port
     Export: DBPort
   ApplicationDatabaseSubnetGroup:
     Value: !Ref ApplicationDatabaseSubnetGroup
