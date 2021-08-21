@@ -77,11 +77,11 @@ Outputs:
     Export:
       Name: ApplicationDatabaseName
   DBEndpoint:
-    Value: !GetAtt Endpoint.Address
+    Value: !GetAtt ApplicationDatabase.Endpoint.Address
     Export:
       Name: DBEndpoint
   DBPort:
-    Value: !GetAtt Endpoint.Port
+    Value: !GetAtt ApplicationDatabase.Endpoint.Port
     Export:
       Name: DBPort
   ApplicationDatabaseSubnetGroup:
