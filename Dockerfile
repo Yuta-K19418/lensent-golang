@@ -21,7 +21,7 @@ COPY --from=builder /go/src/lensent/app /app
 # Set Environment Variable
 ARG DB_HOST
 ENV DB_HOST=${DB_HOST}
-echo "$DB_HOST"
+RUN echo "$DB_HOST"
 ENV DB_USER=postgres
 ENV DB_PASSWORD=postgres
 ENV DB=lensent
