@@ -13,8 +13,7 @@ ENV GOOS=linux
 ENV GOARCH=amd64
 WORKDIR /go/src/lensent
 COPY . .
-RUN go build -o app main.go
-COPY ./local.env ./app/.
+RUN go build -o ./app/main main.go
 
 # Runtime Container
 FROM alpine
@@ -22,5 +21,9 @@ COPY --from=builder /go/src/lensent/app /app
 # Set Environment Variable
 ARG DB_HOST
 ENV DB_HOST=${DB_HOST}
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+ENV DB=lensent
+ENV DB_PORT=5432
 EXPOSE 8080
-ENTRYPOINT ["/app"]
+ENTRYPOINT ["/app/main"]
