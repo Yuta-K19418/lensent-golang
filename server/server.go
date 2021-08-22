@@ -22,7 +22,6 @@ func Router() *gin.Engine {
 	// Setting cors
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{
-		"http://lensent.tk",
 		"http://lensent.tk*",
 	}
 	corsConfig.AllowMethods = []string{
