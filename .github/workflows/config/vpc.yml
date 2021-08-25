@@ -39,7 +39,7 @@ Resources:
     Properties:
       AvailabilityZone: "ap-northeast-1a"
       VpcId: !Ref LenSentVPC 
-      CidrBlock: 10.0.11.0/24
+      CidrBlock: 10.0.5.0/24
       Tags:
         - Key: Name
           Value: RDSSubnet1fromcf
@@ -48,7 +48,7 @@ Resources:
     Properties:
       AvailabilityZone: "ap-northeast-1c"
       VpcId: !Ref LenSentVPC 
-      CidrBlock: 10.0.12.0/24
+      CidrBlock: 10.0.6.0/24
       Tags:
         - Key: Name
           Value: RDSSubnet2fromcf
