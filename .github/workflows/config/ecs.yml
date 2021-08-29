@@ -425,7 +425,7 @@ Resources:
   #     - ServiceScaleInPolicy
 
 Outputs:
-  APIALB:
-    Value: !Ref APIALB
+  APIALBEndpoint:
+    Value: !GetAtt APIALB.DNSName
     Export:
-      Name: APIALBName
+      Name: APIALBEndpoint
