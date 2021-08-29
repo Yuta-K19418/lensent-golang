@@ -10,9 +10,9 @@ Metadata:
         Parameters:
           - ProjectName
       - Label:
-          default: "InternetALB Configuration"
+          default: "APIALB Configuration"
         Parameters:
-          - InternetALBName
+          - APIALBName
           - TargetGroupName
       - Label:
           default: "Fargate for ECS Configuration"
@@ -35,8 +35,8 @@ Metadata:
       #     - TaskMaxContainerCount
 
     ParameterLabels:
-      InternetALBName:
-        default: "InternetALBName"
+      APIALBName:
+        default: "APIALBName"
       TargetGroupName:
         default: "TargetGroupName"
       ECSClusterName:
@@ -64,8 +64,8 @@ Parameters:
     Default: lensent
     Type: String
 
-#InternetALB
-  InternetALBName:
+#APIALB
+  APIALBName:
     Type: String
     Default: "alb"
 
@@ -170,13 +170,13 @@ Resources:
 # ------------------------------------------------------------#
 #  Internet ALB
 # ------------------------------------------------------------#
-  InternetALB:
+  APIALB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
-      Name: !Sub "${ProjectName}-${InternetALBName}"
+      Name: !Sub "${ProjectName}-${APIALBName}"
       Tags:
         - Key: Name
-          Value: !Sub "${ProjectName}-${InternetALBName}"
+          Value: !Sub "${ProjectName}-${APIALBName}"
       Scheme: "internet-facing"
       LoadBalancerAttributes:
         - Key: "deletion_protection.enabled"
@@ -199,7 +199,7 @@ Resources:
       DefaultActions:
         - TargetGroupArn: !Ref TargetGroup
           Type: forward
-      LoadBalancerArn: !Ref InternetALB
+      LoadBalancerArn: !Ref APIALB
       Port: 80
       Protocol: HTTP
 
@@ -423,3 +423,9 @@ Resources:
   #   DependsOn:
   #     - ECSService
   #     - ServiceScaleInPolicy
+
+Outputs:
+  APIALB:
+    Value: !Ref APIALB
+    Export:
+      Name: APIALBName
