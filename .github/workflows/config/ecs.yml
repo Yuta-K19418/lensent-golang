@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description:
-  Fargate and ALB Create For LenSentApp
+  Create Fargate and ALB For LenSentApp
 
 Metadata:
   "AWS::CloudFormation::Interface":

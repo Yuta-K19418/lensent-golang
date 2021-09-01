@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Sucurity Group For LenSentApp
+Description: Security Group For LenSentApp
 
 Resources: 
   ALBSecurityGroup:
