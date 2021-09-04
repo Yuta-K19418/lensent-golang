@@ -418,7 +418,7 @@ Resources:
 Outputs:
   APIALBEndpoint:
     Value: !Sub
-      - "https://${APIALBEndpoint}"
+      - "http://${APIALBEndpoint}"
       - APIALBEndpoint: !GetAtt APIALB.DNSName
     Export:
       Name: APIALBEndpoint
