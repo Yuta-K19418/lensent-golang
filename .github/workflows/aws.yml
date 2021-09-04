@@ -43,55 +43,6 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-1
-    
-    - name: Deploy Cloudformation LenSentECR
-      env:
-        STACK_NAME: LenSentECR
-        TEMPLATE_NAME: ecr.yml
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME}
-    
-    - name: Deploy Cloudformation LenSentNetwork
-      env:
-        STACK_NAME: LenSentNetwork
-        TEMPLATE_NAME: vpc.yml
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME}
-
-    - name: Deploy Cloudformation LenSentSG
-      env:
-        STACK_NAME: LenSentSG
-        TEMPLATE_NAME: sg.yml
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME}
-    
-    - name: Deploy Cloudformation LenSentLog
-      env:
-        STACK_NAME: LenSentLog
-        TEMPLATE_NAME: s3.yml
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME}
-
-    - name: Deploy Cloudformation LenSentDB
-      env:
-        STACK_NAME: LenSentDB
-        TEMPLATE_NAME: rds.yml
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME}
-    
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image

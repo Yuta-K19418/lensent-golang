@@ -2,7 +2,6 @@ package server
 
 import (
 	"lensent/controllers"
-
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -22,7 +21,10 @@ func Router() *gin.Engine {
 	// Setting cors
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{
-		"http://lensent.tk*",
+		"https://lensent.tk/",
+		"http://lensent.tk/",
+		"https://lensent-nextjs-alb-*.ap-northeast-1.elb.amazonaws.com/",
+		"http://lensent-nextjs-alb-*.ap-northeast-1.elb.amazonaws.com/",
 	}
 	corsConfig.AllowMethods = []string{
 		"POST",

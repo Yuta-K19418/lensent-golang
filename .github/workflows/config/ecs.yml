@@ -178,15 +178,6 @@ Resources:
         - Key: Name
           Value: !Sub "${ProjectName}-${APIALBName}"
       Scheme: "internet-facing"
-      LoadBalancerAttributes:
-        - Key: "deletion_protection.enabled"
-          Value: false
-        - Key: "idle_timeout.timeout_seconds"
-          Value: 60
-        - Key: "access_logs.s3.enabled"
-          Value: false
-        - Key: "access_logs.s3.bucket"
-          Value: !ImportValue ELBLogBucketName
       SecurityGroups:
         - !ImportValue ALBSecurityGroupName
       Subnets:
