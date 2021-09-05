@@ -539,8 +539,8 @@ Resources:
           Type: A
         - Name: !Sub "backend.${HostedZoneName}."
           AliasTarget:
-            HostedZoneId: !ImportValue APIALBCanonicalHostedZoneID
-            DNSName: !ImportValue APIALBEndpoint
+            HostedZoneId: !GetAtt APIALB.CanonicalHostedZoneID
+            DNSName: !GetAtt APIALB.DNSName
           Type: A
 
   # ------------------------------------------------------------#
@@ -572,10 +572,6 @@ Outputs:
       - APIALBEndpoint: !GetAtt APIALB.DNSName
     Export:
       Name: APIALBEndpoint
-  APIALBCanonicalHostedZoneID:
-    Value: !GetAtt APIALB.CanonicalHostedZoneID
-    Export:
-      Name: APIALBCanonicalHostedZoneID
   HostedZone:
     Value: !Ref Route53HostedZone
     Export:
