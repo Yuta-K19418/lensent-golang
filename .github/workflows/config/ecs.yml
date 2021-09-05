@@ -266,7 +266,7 @@ Resources:
           Value: !Sub "${ProjectName}-${InternetALBName}"
       Scheme: "internet-facing"
       SecurityGroups:
-        - !ImportValue ALBForNextjsSecurityGroup
+        - !ImportValue ALBForNextjsSecurityGroupName
       Subnets:
         - !ImportValue ECSSubnet1Name
         - !ImportValue ECSSubnet2Name
