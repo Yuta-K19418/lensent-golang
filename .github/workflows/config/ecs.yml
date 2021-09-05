@@ -15,6 +15,11 @@ Metadata:
           - APIALBName
           - TargetGroupName
       - Label:
+          default: "InternetALB Configuration"
+        Parameters:
+          - InternetALBName
+          - TargetGroupNameForInternetALB
+      - Label:
           default: "Fargate for ECS Configuration"
         Parameters:
           - ECSClusterName
@@ -175,13 +180,22 @@ Resources:
 # ------------------------------------------------------------#
 #  Target Group
 # ------------------------------------------------------------#
-  TargetGroup:
+  TargetGroupForAPIALB:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
       VpcId: !ImportValue LenSentVPCName
-      Name: !Sub "${ProjectName}-${TargetGroupName}"
+      Name: !Sub "${ProjectName}-${TargetGroupNameForAPIALB}"
       Protocol: HTTP
       Port: 8080
+      TargetType: ip
+
+  TargetGroupForInternetALB:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      VpcId: !ImportValue LenSentVPCName
+      Name: !Sub "${ProjectName}-${TargetGroupNameForInternetALB}"
+      Protocol: HTTP
+      Port: 3000
       TargetType: ip
 
 # ------------------------------------------------------------#
@@ -201,7 +215,7 @@ Resources:
         - !ImportValue ECSSubnet1Name
         - !ImportValue ECSSubnet2Name
 
-  ALBListenerHTTP:
+  APIALBListenerHTTP:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
     Properties:
       DefaultActions:
@@ -216,7 +230,7 @@ Resources:
       LoadBalancerArn: !Ref APIALB
       Port: 80
       Protocol: HTTP
-  ALBListenerHTTPS:
+  APIALBListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       Port: 443
@@ -227,6 +241,48 @@ Resources:
         - TargetGroupArn: !Ref TargetGroup
           Type: forward
       LoadBalancerArn: !Ref APIALB
+
+
+  InternetALB:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Name: !Sub "${ProjectName}-${InternetALBName}"
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${InternetALBName}"
+      Scheme: "internet-facing"
+      SecurityGroups:
+        - !ImportValue ALBForNextjsSecurityGroup
+      Subnets:
+        - !ImportValue ECSSubnet1Name
+        - !ImportValue ECSSubnet2Name
+
+  InternetALBListenerHTTP:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Host: "#{host}"
+            Path: "/#{path}"
+            Port: 443
+            Protocol: HTTPS
+            Query: "#{query}"
+            StatusCode: HTTP_301
+      LoadBalancerArn: !Ref InternetALB
+      Port: 80
+      Protocol: HTTP
+  InternetListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Ref ACM
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroupForInternetALB
+          Type: forward
+      LoadBalancerArn: !Ref InternetALB
 
 # ------------------------------------------------------------#
 # ECS Cluster
@@ -308,7 +364,7 @@ Resources:
 # ------------------------------------------------------------#
   ECSService:
     Type: AWS::ECS::Service
-    DependsOn: ALBListenerHTTPS
+    DependsOn: APIALBListenerHTTPS
     Properties:
       Cluster: !Ref ECSCluster
       DesiredCount: !Ref ECSTaskDesiredCount
@@ -496,8 +552,6 @@ Outputs:
       Name: APIALBName
   APIALBTargetGroup:
     Value: !Ref TargetGroup
-    Export:
-      Name: APIALBTargetGroupName
   APIALBEndpoint:
     Value: !Sub
       - "http://${APIALBEndpoint}"
@@ -512,3 +566,21 @@ Outputs:
     Value: !Ref Route53HostedZone
     Export:
       Name: HostedZoneI
+  InternetALB:
+    Value: !Ref InternetALB
+    Export:
+      Name: InternetALBName
+  TargetGroupForInternetALB:
+    Value: !Ref TargetGroupForInternetALB
+    Export:
+      Name: TargetGroupNameForInternetALB
+  InternetALBHostedZoneID:
+    Value: !GetAtt InternetALB.CanonicalHostedZoneID
+    Export:
+      Name: InternetALBHostZoneId
+  InternetALBEndpoint:
+    Value: !Sub
+      - "https://${InternetALBEndpoint}"
+      - InternetALBEndpoint: !GetAtt InternetALB.DNSName
+    Export:
+      Name: InternetALBEndpoint
