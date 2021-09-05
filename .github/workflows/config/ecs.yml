@@ -188,8 +188,14 @@ Resources:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
     Properties:
       DefaultActions:
-        - TargetGroupArn: !Ref TargetGroup
-          Type: forward
+        - Type: redirect
+          RedirectConfig:
+            Host: "#{host}"
+            Path: "/#{path}"
+            Port: 443
+            Protocol: HTTPS
+            Query: "#{query}"
+            StatusCode: HTTP_301
       LoadBalancerArn: !Ref APIALB
       Port: 80
       Protocol: HTTP
@@ -416,9 +422,21 @@ Resources:
   #     - ServiceScaleInPolicy
 
 Outputs:
+  APIALB:
+    Value: !Ref APIALB
+    Export:
+      Name: APIALBName
+  APIALBTargetGroup:
+    Value: !Ref TargetGroup
+    Export:
+      Name: APIALBTargetGroupName
   APIALBEndpoint:
     Value: !Sub
       - "http://${APIALBEndpoint}"
       - APIALBEndpoint: !GetAtt APIALB.DNSName
     Export:
       Name: APIALBEndpoint
+  APIALBCanonicalHostedZoneID
+    Value: !GetAtt InternetALB.CanonicalHostedZoneID
+    Export:
+      Name: APIALBCanonicalHostedZoneID
