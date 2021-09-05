@@ -437,6 +437,6 @@ Outputs:
     Export:
       Name: APIALBEndpoint
   APIALBCanonicalHostedZoneID:
-    Value: !GetAtt InternetALB.CanonicalHostedZoneID
+    Value: !GetAtt APIALB.CanonicalHostedZoneID
     Export:
       Name: APIALBCanonicalHostedZoneID
