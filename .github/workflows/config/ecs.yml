@@ -80,12 +80,22 @@ Parameters:
 #APIALB
   APIALBName:
     Type: String
-    Default: "alb"
+    Default: "api-alb"
+
+#TargetGroupNameForAPIALB
+  TargetGroupNameForAPIALB:
+    Type: String
+    Default: "tg-golang"
+
+#InternetALB
+  InternetALBName:
+    Type: String
+    Default: "internet-alb"
 
 #TargetGroupName
-  TargetGroupName:
+  TargetGroupNameForInternetALB:
     Type: String
-    Default: "tg"
+    Default: "tg-next-js"
 
 #ECSClusterName
   ECSClusterName:
@@ -573,7 +583,7 @@ Outputs:
   TargetGroupForInternetALB:
     Value: !Ref TargetGroupForInternetALB
     Export:
-      Name: TargetGroupNameForInternetALB
+      Name: TargetGroupForInternetALB
   InternetALBHostedZoneID:
     Value: !GetAtt InternetALB.CanonicalHostedZoneID
     Export:
