@@ -13,7 +13,7 @@ Metadata:
           default: "APIALB Configuration"
         Parameters:
           - APIALBName
-          - TargetGroupName
+          - TargetGroupNameForAPIALB
       - Label:
           default: "InternetALB Configuration"
         Parameters:
@@ -50,8 +50,12 @@ Metadata:
     ParameterLabels:
       APIALBName:
         default: "APIALBName"
-      TargetGroupName:
-        default: "TargetGroupName"
+      TargetGroupNameForAPIALB:
+        default: "TargetGroupNameForAPIALB"
+      InternetALBName:
+        default: "InternetALBName"
+      TargetGroupNameForInternetALB:
+        default: "TargetGroupNameForInternetALB"
       ECSClusterName:
         default: "ECSClusterName"
       ECSTaskName:
@@ -248,7 +252,7 @@ Resources:
       Certificates:
         - CertificateArn: !Ref ACM
       DefaultActions:
-        - TargetGroupArn: !Ref TargetGroup
+        - TargetGroupArn: !Ref TargetGroupForAPIALB
           Type: forward
       LoadBalancerArn: !Ref APIALB
 
@@ -381,7 +385,7 @@ Resources:
       LaunchType: FARGATE
       LoadBalancers:
         -
-          TargetGroupArn: !Ref TargetGroup
+          TargetGroupArn: !Ref TargetGroupForAPIALB
           ContainerPort: 8080
           ContainerName: !Sub "${ProjectName}-${ECSContainerName}"
       NetworkConfiguration:
@@ -561,7 +565,7 @@ Outputs:
     Export:
       Name: APIALBName
   APIALBTargetGroup:
-    Value: !Ref TargetGroup
+    Value: !Ref TargetGroupForAPIALB
   APIALBEndpoint:
     Value: !Sub
       - "http://${APIALBEndpoint}"
