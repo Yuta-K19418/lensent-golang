@@ -244,6 +244,7 @@ Resources:
       LoadBalancerArn: !Ref APIALB
       Port: 80
       Protocol: HTTP
+
   APIALBListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -255,7 +256,6 @@ Resources:
         - TargetGroupArn: !Ref TargetGroupForAPIALB
           Type: forward
       LoadBalancerArn: !Ref APIALB
-
 
   InternetALB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
@@ -286,6 +286,7 @@ Resources:
       LoadBalancerArn: !Ref InternetALB
       Port: 80
       Protocol: HTTP
+
   InternetListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -576,6 +577,10 @@ Outputs:
     Value: !Ref Route53HostedZone
     Export:
       Name: HostedZoneI
+  InternetListenerHTTPS:
+    Value: !Ref InternetListenerHTTPS
+    Export:
+      Name: InternetListenerHTTPS
   InternetALB:
     Value: !Ref InternetALB
     Export:
