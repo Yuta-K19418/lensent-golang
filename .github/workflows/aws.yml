@@ -63,15 +63,3 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Deploy Cloudformation LenSentECS
-      env:
-        STACK_NAME: LenSentECS
-        TEMPLATE_NAME: ecs.yml
-        ECSImageName: ${{ steps.login-ecr.outputs.registry }}/lensent-golang-ecr:${{ github.sha }}
-        HOSTZONE_NAME: lensent.tk
-      run: |
-        aws cloudformation deploy \
-           --template-file ./.github/workflows/config/${TEMPLATE_NAME} \
-           --stack-name ${STACK_NAME} \
-           --capabilities CAPABILITY_NAMED_IAM \
-           --parameter-overrides ECSImageName=${ECSImageName}  HostedZoneName=${HOSTZONE_NAME}
