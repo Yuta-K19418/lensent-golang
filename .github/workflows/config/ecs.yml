@@ -25,6 +25,14 @@ Metadata:
           - ECSImageName
           - ECSServiceName
           - ECSTaskDesiredCount
+      - Label:
+          default: "Route53 Configuration"
+        Parameters:
+          - HostedZoneName
+      - Label:
+          default: "ACM Configuration"
+        Parameters:
+          - Record01
       # - Label:
       #     default: "Scaling Configuration"
       #   Parameters:
@@ -116,6 +124,15 @@ Parameters:
     Type: Number
     Default: 1
 
+  HostedZoneName:
+    Description: domain name.
+    Type: String
+
+  Record01:
+    Type: String
+    Default: "lensent.tk"
+    Description: domain name
+
 # Scaling params
   # ServiceScaleEvaluationPeriods:
   #   Description: The number of periods over which data is compared to the specified threshold
@@ -183,6 +200,33 @@ Resources:
       Subnets:
         - !ImportValue ECSSubnet1Name
         - !ImportValue ECSSubnet2Name
+
+  ALBListenerHTTP:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Host: "#{host}"
+            Path: "/#{path}"
+            Port: 443
+            Protocol: HTTPS
+            Query: "#{query}"
+            StatusCode: HTTP_301
+      LoadBalancerArn: !Ref APIALB
+      Port: 80
+      Protocol: HTTP
+  ALBListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Ref ACM
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref APIALB
 
 # ------------------------------------------------------------#
 # ECS Cluster
@@ -405,6 +449,46 @@ Resources:
   #     - ECSService
   #     - ServiceScaleInPolicy
 
+  # ------------------------------------------------------------#
+  #  Route53
+  # ------------------------------------------------------------#
+
+  Route53HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Sub "${HostedZoneName}"
+  route53RSGroup:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref Route53HostedZone
+      RecordSets:
+        - Name: !Sub "www.${HostedZoneName}."
+          AliasTarget:
+            HostedZoneId: !GetAtt InternetALB.CanonicalHostedZoneID
+            DNSName: !GetAtt InternetALB.DNSName
+          Type: A
+        - Name: !Sub "backend.${HostedZoneName}."
+          AliasTarget:
+            HostedZoneId: !ImportValue APIALBCanonicalHostedZoneID
+            DNSName: !ImportValue APIALBEndpoint
+          Type: A
+
+  # ------------------------------------------------------------#
+  #  ACM
+  # ------------------------------------------------------------#
+
+  ACM:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "${Record01}"
+      DomainValidationOptions:
+        - DomainName: !Sub "${Record01}"
+          HostedZoneId: !Ref Route53HostedZone
+      SubjectAlternativeNames:
+        - !Sub "*.${Record01}"
+      ValidationMethod: DNS
+
+
 Outputs:
   APIALB:
     Value: !Ref APIALB
@@ -424,3 +508,7 @@ Outputs:
     Value: !GetAtt APIALB.CanonicalHostedZoneID
     Export:
       Name: APIALBCanonicalHostedZoneID
+  HostedZone:
+    Value: !Ref Route53HostedZone
+    Export:
+      Name: HostedZoneI
