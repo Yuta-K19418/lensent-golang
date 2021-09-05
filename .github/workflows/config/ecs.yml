@@ -82,7 +82,7 @@ Parameters:
 #ECSTaskName
   ECSTaskName:
     Type: String
-    Default: "task"
+    Default: "golang-task"
 
 #ECSTaskCPUUnit
   ECSTaskCPUUnit:
@@ -99,7 +99,7 @@ Parameters:
 #ECSContainerName
   ECSContainerName:
     Type: String
-    Default: "container"
+    Default: "golang-container"
 
 #ECSImageName
   ECSImageName:
@@ -109,7 +109,7 @@ Parameters:
 #ECSServiceName
   ECSServiceName:
     Type: String
-    Default: "service"
+    Default: "golang-service"
 
 #ECSTaskDesiredCount
   ECSTaskDesiredCount:
